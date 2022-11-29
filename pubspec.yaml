@@ -1,0 +1,72 @@
+name: strikerFootballman
+description: A game.
+
+publish_to: "none"
+
+version: 1.0.0+1
+environment:
+  sdk: ">=2.17.0 <3.0.0"
+
+dependencies:
+  firebase_core: ^1.22.0
+  firebase_remote_config: ^2.0.17
+  audioplayers: ^1.0.1
+  flame: 1.3.0
+  flame_audio: 1.3.1
+  provider: 6.0.3
+  flutter_carousel_slider: 1.0.9
+  hive: 2.2.3
+  hive_generator: 1.1.3
+  path_provider: 2.0.11
+  flutter:
+    sdk: flutter
+  cupertino_icons: 1.0.5
+  hive_flutter: 1.1.0
+  onesignal_flutter: ^3.2.7
+  appsflyer_sdk: ^6.8.2
+  flutter_jailbreak_detection: ^1.8.0
+  firebase_analytics: ^9.3.4
+  change_app_package_name: ^1.1.0
+  animated_native_splash: ^1.3.0
+  flutter_native_splash: ^2.2.0+1
+  flutter_webview_pro: ^3.0.1+3
+  equatable: ^2.0.5
+  flutter_bloc: ^8.1.1
+  flutter_secure_storage: ^5.1.2
+  flutter_screenutil: ^5.5.4
+  flutter_svg: ^1.0.3
+  auto_size_text: ^3.0.0
+  advertising_id: ^2.3.0
+dependency_overrides:
+  firebase_core_platform_interface: 4.5.1
+
+
+dev_dependencies:
+  build_runner: 2.2.0
+  flutter_test:
+    sdk: flutter
+  flutter_lints: 2.0.1
+  flutter_launcher_icons: "^0.10.0"
+
+flutter_icons:
+  android: "launcher_icon"
+  adaptive_icon_foreground: 'assets/logo_foreground.png'
+  adaptive_icon_background: '#ffffff'
+  ios: true
+  image_path: "assets/logo.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
+    - assets/audio/
+  fonts:
+    - family: LibreBaskerville
+      fonts:
+        - asset: assets/fonts/LibreBaskerville-Bold.ttf
+animated_native_splash:
+  # This package generates native code to customize Flutter's splash
+
+  # jsonFile is the only required parameter.This the file use to setup the animation object.
+  jsonFile: assets/splash.json

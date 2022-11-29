@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1088548439002",
+    "project_id": "striker-football-man",
+    "storage_bucket": "striker-football-man.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1088548439002:android:1cbb79ce669064e3a7f6e3",
+        "android_client_info": {
+          "package_name": "com.gamewerfallers.strikerFootballman"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1088548439002-3mmji07iols10d7ge4t37lm6th8hulpe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJ1v0SQ0kZE5lnREAQmaiGLMEzPSjrmf0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1088548439002-3mmji07iols10d7ge4t37lm6th8hulpe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
