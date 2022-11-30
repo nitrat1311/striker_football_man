@@ -39,9 +39,6 @@ class MasksweirdGame extends FlameGame
   late Sprite sprite;
   late SpriteAnimation no_fire;
   late SpriteAnimation fire;
-  late SpriteAnimation animationBack;
-  late SpriteAnimation animationForward;
-  late SpriteAnimation animationRight;
   late SpriteAnimation animation5;
 
   // Stores a reference to an enemy manager component.
@@ -84,8 +81,6 @@ class MasksweirdGame extends FlameGame
         'ship_A.png',
         'animation_fire.png',
         'animation_right.png',
-        'animation_forward.png',
-        'animation_back.png',
       ]);
 
       _audioPlayerComponent = AudioPlayerComponent();
@@ -113,24 +108,9 @@ class MasksweirdGame extends FlameGame
       // );
       no_fire = SpriteSheet.fromColumnsAndRows(
         image: images.fromCache('animation_right.png'),
-        columns: 4,
+        columns: 1,
         rows: 1,
       ).createAnimation(from: 0, to: 1, row: 0, stepTime: 0.2, loop: false);
-      animationBack = SpriteSheet.fromColumnsAndRows(
-        image: images.fromCache('animation_back.png'),
-        columns: 3,
-        rows: 1,
-      ).createAnimation(from: 0, to: 3, row: 0, stepTime: 0.2, loop: true);
-      animationForward = SpriteSheet.fromColumnsAndRows(
-        image: images.fromCache('animation_forward.png'),
-        columns: 3,
-        rows: 1,
-      ).createAnimation(from: 0, to: 3, row: 0, stepTime: 0.2, loop: true);
-      animationRight = SpriteSheet.fromColumnsAndRows(
-        image: images.fromCache('animation_right.png'),
-        columns: 4,
-        rows: 1,
-      ).createAnimation(from: 0, to: 4, row: 0, stepTime: 0.08, loop: false);
       fire = SpriteSheet.fromColumnsAndRows(
         image: images.fromCache('animation_fire.png'),
         columns: 6,
@@ -139,7 +119,7 @@ class MasksweirdGame extends FlameGame
       // Create a basic joystick component on left.
       final joystick = JoystickComponent(
         anchor: Anchor.bottomLeft,
-        position: Vector2(size.x / 2 - size.x / 3, size.y - 32),
+        position: Vector2(size.x / 2.5, size.y - 32),
         background: CircleComponent(
           radius: 50,
           paint: Paint()..color = AppColors.gradientTitle2.withOpacity(0.5),
@@ -150,33 +130,24 @@ class MasksweirdGame extends FlameGame
       player = Player(
         joystick: joystick,
         animation: no_fire,
-        size: Vector2(179 / 2, 250 / 2),
-        position: Vector2(0, size.y / 1.9),
+        size: Vector2(302 / 2, 158 / 2),
+        position: Vector2(size.x / 2, size.y / 1.9),
       );
 
       // Makes sure that the sprite is centered.
       player.anchor = Anchor.center;
       add(player);
-      _healthBar =
-          HealthBar(player: player, position: Vector2(size.x - 150, 55));
+      _healthBar = HealthBar(
+          player: player, position: Vector2(size.x - 150, size.y - 85));
       add(_healthBar);
       _enemyManager = EnemyManager(spriteSheet: fire);
       // _allyManager = AllyManager(sprite: sprite);
       // add(_allyManager);
       add(_enemyManager);
-      final button = ButtonComponent(
-        button: CircleComponent(
-          radius: 60,
-          paint: Paint()..color = AppColors.gradientTitle2.withOpacity(0.5),
-        ),
-        anchor: Anchor.bottomRight,
-        position: Vector2(size.x - 30, size.y - 30),
-        onPressed: player.jump,
-      );
-      add(button);
+
       // Create text component for player score.
       _playerScore = TextComponent(
-        position: Vector2(size.x / 2 - 150, 30),
+        position: Vector2(size.x / 2 - 250, size.y - 130),
         textRenderer: TextPaint(
           style: const TextStyle(
               letterSpacing: 5,
@@ -187,7 +158,7 @@ class MasksweirdGame extends FlameGame
         ),
       );
       _playerScore2 = TextComponent(
-        position: Vector2(size.x / 2 - 150, 28),
+        position: Vector2(size.x / 2 - 250, size.y - 128),
         textRenderer: TextPaint(
             style: TextStyle(
                 letterSpacing: 5,
@@ -211,7 +182,7 @@ class MasksweirdGame extends FlameGame
 
       // Create text component for player health.
       _playerHealth = TextComponent(
-        position: Vector2(size.x - 48, 30),
+        position: Vector2(size.x - 48, size.y - 130),
         textRenderer: TextPaint(
           style: const TextStyle(
               letterSpacing: 5,
@@ -222,7 +193,7 @@ class MasksweirdGame extends FlameGame
         ),
       );
       _playerHealth2 = TextComponent(
-        position: Vector2(size.x - 50, 28),
+        position: Vector2(size.x - 50, size.y - 128),
         textRenderer: TextPaint(
           style: TextStyle(
               letterSpacing: 5,
@@ -283,7 +254,7 @@ class MasksweirdGame extends FlameGame
     //   _player.animation = animation2;
     // }
 
-    if (animationRight.isLastFrame) {
+    if (no_fire.isLastFrame) {
       player.compl();
     }
     for (var command in _commandList) {

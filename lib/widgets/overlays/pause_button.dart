@@ -18,8 +18,8 @@ class PauseButton extends StatelessWidget {
       alignment: Alignment.topLeft,
       child: TextButton(
         child: Icon(
-          size: 42.h,
-          Icons.stop,
+          size: 82.h,
+          Icons.pause_sharp,
           color: AppColors.gradientTitle2,
         ),
         onPressed: () {

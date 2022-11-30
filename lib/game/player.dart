@@ -56,16 +56,14 @@ class Player extends SpriteAnimationComponent
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollision(intersectionPoints, other);
 
-    if (other is Enemy &&
-        !gameRef.player.animation!.isLastFrame &&
-        gameRef.player.animation == gameRef.animationRight) {
+    if (other is Enemy) {
       // Make the camera shake, with custom intensity.
 
       Bullet bullet = Bullet(
           animation: gameRef.fire,
           size: Vector2(104 / 2, 101 / 2),
           position: Vector2(
-              gameRef.player.position.x + 32, gameRef.player.position.y + 62));
+              gameRef.player.position.x, gameRef.player.position.y - 62));
 
       // Anchor it to center and add to game world.
       bullet.anchor = Anchor.bottomCenter;
@@ -87,22 +85,11 @@ class Player extends SpriteAnimationComponent
     // if (playerState == PlayerState.jumping) {
     //   gameRef.player.animation = gameRef.animationRight;
     // }
-    if (joystick.delta.x == 0) {
+    if (joystick.delta.y == 0) {
       // gameRef.animationRight.reset();
-      gameRef.animationForward.reset();
-      gameRef.animationBack.reset();
-      gameRef.player.animation?.done();
     }
     if (!joystick.delta.isZero()) {
-      if (joystick.delta.x < 0) {
-        gameRef.animationForward.reset();
-        gameRef.player.animation = gameRef.animationBack;
-      }
-      if (joystick.delta.x > 0) {
-        gameRef.animationBack.reset();
-        gameRef.player.animation = gameRef.animationForward;
-      }
-      position.add(Vector2(joystick.relativeDelta.x, 0) * 200 * dt);
+      position.add(Vector2(0, joystick.relativeDelta.y) * 450 * dt);
     }
 
     if (playerState == PlayerState.stopped1) {}
@@ -143,9 +130,9 @@ class Player extends SpriteAnimationComponent
   }
 
   void jump() async {
-    playerState = PlayerState.jumping;
-    gameRef.no_fire.reset();
-    gameRef.player.animation = gameRef.animationRight;
+    // playerState = PlayerState.jumping;
+    // gameRef.no_fire.reset();
+    // gameRef.player.animation = gameRef.animationRight;
     // gameRef.animationRight.reset();
     // gameRef.animationForward.reset();
     // gameRef.animationBack.reset();
@@ -156,14 +143,14 @@ class Player extends SpriteAnimationComponent
 
     //   playerState = PlayerState.stopped2;
     // } else
-    if (playerState == PlayerState.jumping) {
-      gameRef.no_fire.reset();
-      gameRef.animationRight.reset();
-      gameRef.animationForward.reset();
-      gameRef.animationBack.reset();
+    // if (playerState == PlayerState.jumping) {
+    //   gameRef.no_fire.reset();
+    //   gameRef.animationRight.reset();
+    //   gameRef.animationForward.reset();
+    //   gameRef.animationBack.reset();
 
-      playerState = PlayerState.stopped1;
-    }
+    //   playerState = PlayerState.stopped1;
+    // }
   }
 
   void compl2() {

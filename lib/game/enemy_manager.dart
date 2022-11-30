@@ -1,6 +1,4 @@
 import 'dart:math';
-
-import 'package:flame/sprite.dart';
 import 'package:flame/components.dart';
 import 'package:provider/provider.dart';
 
@@ -30,7 +28,7 @@ class EnemyManager extends Component
 
   EnemyManager({required this.spriteSheet}) : super() {
     // Sets the timer to call _spawnEnemy() after every 1 second, until timer is explicitly stops.
-    _timer = Timer(0.9, onTick: _spawnEnemy, repeat: true);
+    _timer = Timer(1.2, onTick: _spawnEnemy, repeat: true);
 
     // Sets freeze time to 2 seconds. After 2 seconds spawn timer will start again.
     _freezeTimer = Timer(2, onTick: () {
@@ -40,18 +38,10 @@ class EnemyManager extends Component
 
   // Spawns a new enemy at random position at the top of the screen.
   void _spawnEnemy() {
-    Vector2 initialSize = Vector2(104 / 2, 101 / 2);
+    Vector2 initialSize = Vector2(101 / 2, 101 / 2);
 
     // random.nextDouble() generates a random number between 0 and 1.
     // Multiplying it by gameRef.size.x makes sure that the value remains between 0 and width of screen.
-    Vector2 position =
-        Vector2((random.nextDouble() * 200) + 100 + gameRef.size.x / 18, 0);
-
-    // Clamps the vector such that the enemy sprite remains within the screen.
-    position.clamp(
-      Vector2.zero() + initialSize / 2,
-      gameRef.size - initialSize / 2,
-    );
 
     // Make sure that we have a valid BuildContext before using it.
     if (gameRef.buildContext != null) {
@@ -65,6 +55,14 @@ class EnemyManager extends Component
       /// Gets a random [EnemyData] object from the list.
       final enemyData = _enemyDataList.elementAt(random.nextInt(maxLevel * 4));
 
+      Vector2 position = Vector2(-enemyData.hMove * gameRef.size.x,
+          (random.nextDouble() * 400) + 200 + gameRef.size.y / 18);
+
+      // Clamps the vector such that the enemy sprite remains within the screen.
+      position.clamp(
+        Vector2.zero() + initialSize / 2,
+        gameRef.size - initialSize / 2,
+      );
       Enemy enemy = Enemy(
         animation: spriteSheet,
         size: initialSize,
@@ -138,56 +136,56 @@ class EnemyManager extends Component
       speed: 200,
       spriteId: 0,
       level: 1,
-      hMove: false,
+      hMove: 1,
     ),
     EnemyData(
       killPoint: 1,
       speed: 200,
       spriteId: 1,
       level: 1,
-      hMove: false,
+      hMove: 1,
     ),
     EnemyData(
       killPoint: 1,
       speed: 200,
       spriteId: 2,
       level: 1,
-      hMove: false,
+      hMove: -1,
     ),
     EnemyData(
       killPoint: 1,
-      speed: 200,
+      speed: 300,
       spriteId: 3,
-      level: 1,
-      hMove: false,
+      level: 2,
+      hMove: 1,
     ),
     EnemyData(
       killPoint: 1,
-      speed: 250,
+      speed: 300,
       spriteId: 4,
       level: 2,
-      hMove: false,
+      hMove: -1,
     ),
     EnemyData(
       killPoint: 1,
-      speed: 450,
+      speed: 350,
       spriteId: 5,
       level: 2,
-      hMove: false,
+      hMove: -1,
     ),
     EnemyData(
       killPoint: 1,
-      speed: 450,
+      speed: 350,
       spriteId: 6,
       level: 2,
-      hMove: false,
+      hMove: -1,
     ),
     EnemyData(
       killPoint: 1,
-      speed: 450,
+      speed: 550,
       spriteId: 7,
       level: 2,
-      hMove: false,
+      hMove: -1,
     ),
   ];
 }

@@ -11,7 +11,7 @@ class EnemyData {
   final int level;
 
   // Indicates if this enemy can move horizontally.
-  final bool hMove;
+  final double hMove;
 
   // Points gains after destroying this enemy.
   final int killPoint;

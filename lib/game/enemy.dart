@@ -17,11 +17,10 @@ import 'audio_player_component.dart';
 class Enemy extends SpriteAnimationComponent
     with KnowsGameSize, CollisionCallbacks, HasGameRef<MasksweirdGame> {
   // The speed of this enemy.
-  double _speed = 250;
+  double _speed = 350;
 
   // This direction in which this Enemy will move.
   // Defaults to vertically downwards.
-  Vector2 moveDirection = Vector2(0, 1);
 
   // Controls for how long enemy should be freezed.
   late Timer _freezeTimer;
@@ -98,9 +97,7 @@ class Enemy extends SpriteAnimationComponent
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollision(intersectionPoints, other);
 
-    if (other is Player &&
-        !gameRef.player.animation!.isLastFrame &&
-        gameRef.player.animation == gameRef.animationRight) {
+    if (other is Player) {
       // If the other Collidable is Player, destroy.
       removeFromParent();
       // destroy();
@@ -189,7 +186,11 @@ class Enemy extends SpriteAnimationComponent
     _freezeTimer.update(dt);
 
     // Update the position of this enemy using its speed and delta time.
-    position += moveDirection * _speed * dt;
+    if (enemyData.hMove == -1) {
+      position += Vector2(-1, 0) * _speed * dt;
+    } else {
+      position += Vector2(enemyData.hMove, 0) * _speed * dt;
+    }
     // print(position -= moveDirection * _speed * dt);
     // print(gameRef.player.position.x);
     // if (position.y > gameRef.size.y / 1.35) {
@@ -201,10 +202,10 @@ class Enemy extends SpriteAnimationComponent
       // gameRef.camera.shake(intensity: 5);
       // removeFromParent();
       destroy();
-    } else if ((position.x < size.x / 2) ||
-        (position.x > (gameRef.size.x - size.x / 2))) {
-      // Enemy is going outside vertical screen bounds, flip its x direction.
-      moveDirection.x *= -1;
+    } else if ((enemyData.hMove == -1) && (position.x < (0 + 25))) {
+      destroy();
+    } else if ((enemyData.hMove == 1) && (position.x > (gameRef.size.x - 25))) {
+      destroy();
     }
   }
 
