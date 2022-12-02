@@ -22,14 +22,14 @@ class Player extends SpriteAnimationComponent
   // Player health.
   int _health = 100;
   int get health => _health;
-
+  bool isRunning = false;
   // A reference to PlayerData so that
-  JoystickComponent joystick;
+  // JoystickComponent joystick;
   late PlayerData _playerData;
   int get score => _playerData.currentScore;
-
+  var moveDirection = 1;
   Player({
-    required this.joystick,
+    // required this.joystick,
     SpriteAnimation? animation,
     Vector2? position,
     Vector2? size,
@@ -42,7 +42,7 @@ class Player extends SpriteAnimationComponent
     // Adding a circular hitbox with radius as 0.8 times
     // the smallest dimension of this components size.
     final shape = RectangleHitbox.relative(
-      Vector2(0.6, 0.1),
+      Vector2(0.6, 1),
       parentSize: Vector2(super.size.x * 0.6, super.size.y * 0.3),
       position: Vector2(super.size.x / 2, super.size.y / 2),
       anchor: Anchor.bottomCenter,
@@ -53,56 +53,17 @@ class Player extends SpriteAnimationComponent
   }
 
   @override
-  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
-    super.onCollision(intersectionPoints, other);
-
-    if (other is Enemy &&
-        !gameRef.player.animation!.isLastFrame &&
-        gameRef.player.animation == gameRef.animationRight) {
-      // Make the camera shake, with custom intensity.
-
-      Bullet bullet = Bullet(
-          animation: gameRef.fire,
-          size: Vector2(104 / 2, 101 / 2),
-          position: Vector2(
-              gameRef.player.position.x + 32, gameRef.player.position.y + 62));
-
-      // Anchor it to center and add to game world.
-      bullet.anchor = Anchor.bottomCenter;
-
-      gameRef.add(bullet);
-
-      //   _health -= 10;
-      //   if (_health <= 0) {
-      //     _health = 0;
-      //   }
-
-    }
-  }
-
-  // This method is called by game class for every frame.
-  @override
   void update(double dt) {
     super.update(dt);
-    // if (playerState == PlayerState.jumping) {
-    //   gameRef.player.animation = gameRef.animationRight;
-    // }
-    if (joystick.delta.x == 0) {
-      // gameRef.animationRight.reset();
-      gameRef.animationForward.reset();
-      gameRef.animationBack.reset();
-      gameRef.player.animation?.done();
+
+    position
+        .add(Vector2(-0.2 * moveDirection, -0.7 * moveDirection) * 200 * dt);
+
+    if (position.y < 280) {
+      moveDirection = -1;
     }
-    if (!joystick.delta.isZero()) {
-      if (joystick.delta.x < 0) {
-        gameRef.animationForward.reset();
-        gameRef.player.animation = gameRef.animationBack;
-      }
-      if (joystick.delta.x > 0) {
-        gameRef.animationBack.reset();
-        gameRef.player.animation = gameRef.animationForward;
-      }
-      position.add(Vector2(joystick.relativeDelta.x, 0) * 200 * dt);
+    if (position.y > gameRef.size.y - 400) {
+      moveDirection = 1;
     }
 
     if (playerState == PlayerState.stopped1) {}
@@ -143,33 +104,16 @@ class Player extends SpriteAnimationComponent
   }
 
   void jump() async {
-    playerState = PlayerState.jumping;
-    gameRef.no_fire.reset();
-    gameRef.player.animation = gameRef.animationRight;
-    // gameRef.animationRight.reset();
-    // gameRef.animationForward.reset();
-    // gameRef.animationBack.reset();
-  }
+    Bullet bullet = Bullet(
+        animation: gameRef.fire,
+        size: Vector2(80 / 2, 80 / 2),
+        position: Vector2(gameRef.size.x - gameRef.size.x / 8,
+            gameRef.size.y - gameRef.size.y / 6));
 
-  void compl() {
-    // if (playerState == PlayerState.reverse) {
-
-    //   playerState = PlayerState.stopped2;
-    // } else
-    if (playerState == PlayerState.jumping) {
-      gameRef.no_fire.reset();
-      gameRef.animationRight.reset();
-      gameRef.animationForward.reset();
-      gameRef.animationBack.reset();
-
-      playerState = PlayerState.stopped1;
+    // Anchor it to center and add to game world.
+    bullet.anchor = Anchor.bottomCenter;
+    if (isRunning == false) {
+      gameRef.add(bullet);
     }
-  }
-
-  void compl2() {
-    // if (playerState == PlayerState.reverse) {
-
-    //   playerState = PlayerState.stopped2;
-    // } else
   }
 }

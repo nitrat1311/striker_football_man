@@ -98,9 +98,7 @@ class Enemy extends SpriteAnimationComponent
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollision(intersectionPoints, other);
 
-    if (other is Player &&
-        !gameRef.player.animation!.isLastFrame &&
-        gameRef.player.animation == gameRef.animationRight) {
+    if (other is Player) {
       // If the other Collidable is Player, destroy.
       removeFromParent();
       // destroy();

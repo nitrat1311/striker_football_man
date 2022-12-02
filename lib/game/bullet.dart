@@ -2,6 +2,9 @@ import 'dart:math';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame/particles.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:strikerFootballman/game/ally.dart';
 import 'package:strikerFootballman/game/command.dart';
 import 'package:strikerFootballman/game/game.dart';
@@ -13,10 +16,14 @@ import 'enemy.dart';
 class Bullet extends SpriteAnimationComponent
     with CollisionCallbacks, HasGameRef<MasksweirdGame> {
   // Speed of the bullet.
-  final double _speed = 450;
+
   Random random = Random();
   // // Controls the direction in which bullet travels.
-  Vector2 direction = Vector2(1, 0);
+  Vector2 getRandomVector() {
+    return (Vector2.random(random) - Vector2.random(random)) * 500;
+  }
+
+  var direction = 1;
 
   Bullet({
     required SpriteAnimation? animation,
@@ -27,7 +34,6 @@ class Bullet extends SpriteAnimationComponent
   @override
   void onMount() {
     super.onMount();
-
     // Adding a circular hitbox with radius as 0.4 times
     //  the smallest dimension of this components size.
     final shape = CircleHitbox.relative(
@@ -37,6 +43,7 @@ class Bullet extends SpriteAnimationComponent
       anchor: Anchor.center,
     );
     add(shape);
+    gameRef.player.isRunning = true;
   }
 
   @override
@@ -45,26 +52,15 @@ class Bullet extends SpriteAnimationComponent
 
     // If the other Collidable is Enemy, remove this bullet.
     if (other is Ally) {
-      direction =
-          Vector2(-random.nextDouble() - 0.5, -random.nextDouble() + 0.7);
-
-      gameRef.player.animation = gameRef.animationBack;
+      // direction =
+      //     Vector2(-random.nextDouble() - 0.5, -random.nextDouble() + 0.7);
     }
     if (other is Player) {
-      removeFromParent();
+      direction = -1;
+      // removeFromParent();
       // gameRef.player.animation = gameRef.catch_animation;
-      final command = Command<Player>(action: (player) {
-        // Use the correct killPoint to increase player's score.
 
-        player.addToScore(10);
-      });
-      gameRef.addCommand(command);
-      gameRef.resetAlly();
-    }
-    if (other is Enemy) {
-      gameRef.player.increaseHealthBy(-10);
-      removeFromParent();
-      gameRef.camera.shake(intensity: 5);
+      // gameRef.resetAlly();
     }
   }
 
@@ -73,16 +69,69 @@ class Bullet extends SpriteAnimationComponent
     super.update(dt);
 
     // Moves the bullet to a new position with _speed and direction.
-    position += direction * 450 * dt;
-    if (position.y < 30 || position.y > gameRef.size.y - 30) {
-      direction.y = direction.y * -1;
-    }
+    position += Vector2(-0.4 * direction, -0.5) * 650 * dt;
+    // if (position.y < 30 || position.y > gameRef.size.y - 30) {
+    //   direction.y = direction.y * -1;
+    // }
 
-    if (position.x < 0 || position.x > gameRef.size.x - 100) {
-      // gameRef.player.increaseHealthBy(-10);
-      // gameRef.camera.shake(intensity: 5);
-      gameRef.player.addToScore(10);
+    if (position.x < 20) {
+      gameRef.player.increaseHealthBy(-10);
+      gameRef.camera.shake(intensity: 5);
+      // gameRef.player.addToScore(10);
       removeFromParent();
+      gameRef.player.isRunning = false;
+    }
+    if (position.x > gameRef.size.x / 2 + 50 &&
+        position.y < gameRef.size.y / 2 - 140) {
+      removeFromParent();
+      gameRef.player.isRunning = false;
+      if (position.x < gameRef.size.y / 2 - 156) {
+        final particleComponent = ParticleSystemComponent(
+          particle: Particle.generate(
+            count: 10,
+            lifespan: 0.2,
+            generator: (i) => AcceleratedParticle(
+              acceleration: getRandomVector(),
+              speed: getRandomVector(),
+              position: position.clone(),
+              child: CircleParticle(
+                radius: 8,
+                paint: Paint()..color = Colors.orange,
+              ),
+            ),
+          ),
+        );
+        final command = Command<Player>(action: (player) {
+          // Use the correct killPoint to increase player's score.
+
+          player.addToScore(30);
+        });
+        gameRef.addCommand(command);
+        gameRef.add(particleComponent);
+      } else {
+        final particleComponent = ParticleSystemComponent(
+          particle: Particle.generate(
+            count: 10,
+            lifespan: 0.2,
+            generator: (i) => AcceleratedParticle(
+              acceleration: getRandomVector(),
+              speed: getRandomVector(),
+              position: position.clone(),
+              child: CircleParticle(
+                radius: 8,
+                paint: Paint()..color = Color.fromARGB(255, 220, 220, 220),
+              ),
+            ),
+          ),
+        );
+        final command = Command<Player>(action: (player) {
+          // Use the correct killPoint to increase player's score.
+
+          player.addToScore(10);
+        });
+        gameRef.addCommand(command);
+        gameRef.add(particleComponent);
+      }
     }
     // if (position.y < 0 || position.x > gameRef.size.y) {
     //   gameRef.player.increaseHealthBy(-10);

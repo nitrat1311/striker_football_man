@@ -6,7 +6,6 @@ import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 import 'package:strikerFootballman/const/colors.dart';
 import 'package:strikerFootballman/game/ally.dart';
-import 'package:strikerFootballman/game/ally_manager.dart';
 import 'package:strikerFootballman/game/records/bloc/records_bloc.dart';
 import 'package:strikerFootballman/game/background.dart';
 
@@ -39,9 +38,7 @@ class MasksweirdGame extends FlameGame
   late Sprite sprite;
   late SpriteAnimation no_fire;
   late SpriteAnimation fire;
-  late SpriteAnimation animationBack;
-  late SpriteAnimation animationForward;
-  late SpriteAnimation animationRight;
+
   late SpriteAnimation animation5;
 
   // Stores a reference to an enemy manager component.
@@ -84,8 +81,6 @@ class MasksweirdGame extends FlameGame
         'ship_A.png',
         'animation_fire.png',
         'animation_right.png',
-        'animation_forward.png',
-        'animation_back.png',
       ]);
 
       _audioPlayerComponent = AudioPlayerComponent();
@@ -93,77 +88,31 @@ class MasksweirdGame extends FlameGame
 
       _background = Background();
       await add(_background);
-      // sprite = Sprite(
-      //   images.fromCache('ally.png'),
-      // );
-
-      // final stars = await ParallaxComponent.load(
-      //   [ParallaxImageData('stars1.png'), ParallaxImageData('stars2.png')],
-      //   fill: LayerFill.width,
-      //   repeat: ImageRepeat.repeat,
-      //   baseVelocity: Vector2(0, -50),
-      //   velocityMultiplierDelta: Vector2(0, 1.5),
-      // );
-      // add(stars);
-
-      // spriteSheet = SpriteSheet.fromColumnsAndRows(
-      //   image: images.fromCache('Group 20.png'),
-      //   columns: 8,
-      //   rows: 1,
-      // );
       no_fire = SpriteSheet.fromColumnsAndRows(
         image: images.fromCache('animation_right.png'),
-        columns: 4,
+        columns: 1,
         rows: 1,
       ).createAnimation(from: 0, to: 1, row: 0, stepTime: 0.2, loop: false);
-      animationBack = SpriteSheet.fromColumnsAndRows(
-        image: images.fromCache('animation_back.png'),
-        columns: 3,
-        rows: 1,
-      ).createAnimation(from: 0, to: 3, row: 0, stepTime: 0.2, loop: true);
-      animationForward = SpriteSheet.fromColumnsAndRows(
-        image: images.fromCache('animation_forward.png'),
-        columns: 3,
-        rows: 1,
-      ).createAnimation(from: 0, to: 3, row: 0, stepTime: 0.2, loop: true);
-      animationRight = SpriteSheet.fromColumnsAndRows(
-        image: images.fromCache('animation_right.png'),
-        columns: 4,
-        rows: 1,
-      ).createAnimation(from: 0, to: 4, row: 0, stepTime: 0.08, loop: false);
+
       fire = SpriteSheet.fromColumnsAndRows(
         image: images.fromCache('animation_fire.png'),
         columns: 6,
         rows: 1,
       ).createAnimation(from: 0, to: 5, row: 0, stepTime: 0.25, loop: true);
-      // Create a basic joystick component on left.
-      final joystick = JoystickComponent(
-        anchor: Anchor.bottomLeft,
-        position: Vector2(size.x / 2 - size.x / 3, size.y - 32),
-        background: CircleComponent(
-          radius: 50,
-          paint: Paint()..color = AppColors.gradientTitle2.withOpacity(0.5),
-        ),
-        knob: CircleComponent(radius: 30),
-      );
-      add(joystick);
+
       player = Player(
-        joystick: joystick,
         animation: no_fire,
-        size: Vector2(179 / 2, 250 / 2),
-        position: Vector2(0, size.y / 1.9),
+        size: Vector2(114 / 2, 250 / 2),
+        position: Vector2(size.x / 3.1, size.y / 2.5),
       );
 
       // Makes sure that the sprite is centered.
       player.anchor = Anchor.center;
       add(player);
       _healthBar =
-          HealthBar(player: player, position: Vector2(size.x - 150, 55));
+          HealthBar(player: player, position: Vector2(50, size.y - 155));
       add(_healthBar);
-      _enemyManager = EnemyManager(spriteSheet: fire);
-      // _allyManager = AllyManager(sprite: sprite);
-      // add(_allyManager);
-      add(_enemyManager);
+
       final button = ButtonComponent(
         button: CircleComponent(
           radius: 60,
@@ -176,7 +125,7 @@ class MasksweirdGame extends FlameGame
       add(button);
       // Create text component for player score.
       _playerScore = TextComponent(
-        position: Vector2(size.x / 2 - 150, 30),
+        position: Vector2(size.x / 2 - 50, size.y - 130),
         textRenderer: TextPaint(
           style: const TextStyle(
               letterSpacing: 5,
@@ -187,7 +136,7 @@ class MasksweirdGame extends FlameGame
         ),
       );
       _playerScore2 = TextComponent(
-        position: Vector2(size.x / 2 - 150, 28),
+        position: Vector2(size.x / 2 - 50, size.y - 128),
         textRenderer: TextPaint(
             style: TextStyle(
                 letterSpacing: 5,
@@ -211,7 +160,7 @@ class MasksweirdGame extends FlameGame
 
       // Create text component for player health.
       _playerHealth = TextComponent(
-        position: Vector2(size.x - 48, 30),
+        position: Vector2(148, size.y - 130),
         textRenderer: TextPaint(
           style: const TextStyle(
               letterSpacing: 5,
@@ -222,7 +171,7 @@ class MasksweirdGame extends FlameGame
         ),
       );
       _playerHealth2 = TextComponent(
-        position: Vector2(size.x - 50, 28),
+        position: Vector2(150, size.y - 128),
         textRenderer: TextPaint(
           style: TextStyle(
               letterSpacing: 5,
@@ -283,9 +232,9 @@ class MasksweirdGame extends FlameGame
     //   _player.animation = animation2;
     // }
 
-    if (animationRight.isLastFrame) {
-      player.compl();
-    }
+    // if (animationRight.isLastFrame) {
+    //   player.compl();
+    // }
     for (var command in _commandList) {
       for (var component in children) {
         command.run(component);
@@ -348,9 +297,10 @@ class MasksweirdGame extends FlameGame
     // First reset player, enemy manager and power-up manager .
     recordsBloc.saveRecord(player.score);
     player.reset();
-    _enemyManager.reset();
+    // _enemyManager.reset();
     // _allyManager.reset();
     player.animation = no_fire;
+    player.isRunning = false;
     children.whereType<Enemy>().forEach((enemy) {
       enemy.removeFromParent();
     });
