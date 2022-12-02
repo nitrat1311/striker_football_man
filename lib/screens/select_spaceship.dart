@@ -28,7 +28,8 @@ class SelectCharacter extends StatelessWidget {
           height: 926,
           fit: BoxFit.cover,
         ),
-        Center(
+        Align(
+          alignment: Alignment(Alignment.center.x, Alignment.center.y),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -40,7 +41,7 @@ class SelectCharacter extends StatelessWidget {
                   border: Border.all(color: AppColors.gradientTitle2, width: 4),
                   borderRadius: AppColors.borderRadius,
                 ),
-                child: FloatingActionButton.small(
+                child: FloatingActionButton.large(
                   heroTag: null,
                   backgroundColor: AppColors.gradientTitle1,
                   onPressed: () {

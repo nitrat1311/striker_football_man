@@ -28,8 +28,8 @@ class GlowingButtonState extends State<GlowingButton> {
         borderRadius: BorderRadius.circular(15),
         gradient: const LinearGradient(
           colors: [
-            Color.fromARGB(255, 167, 69, 95),
-            Color.fromARGB(255, 255, 225, 0),
+            Color.fromARGB(255, 151, 69, 167),
+            Color.fromRGBO(0, 136, 255, 0.5),
           ],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,

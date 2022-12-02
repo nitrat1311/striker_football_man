@@ -130,7 +130,7 @@ class MasksweirdGame extends FlameGame
       player = Player(
         joystick: joystick,
         animation: no_fire,
-        size: Vector2(302 / 2, 158 / 2),
+        size: Vector2(206 / 2, 158 / 2),
         position: Vector2(size.x / 2, size.y / 1.9),
       );
 

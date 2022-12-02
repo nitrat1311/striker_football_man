@@ -1,7 +1,9 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:strikerFootballman/game/audio_player_component.dart';
 import 'package:strikerFootballman/game/bullet.dart';
 import 'package:provider/provider.dart';
+import 'package:strikerFootballman/game/command.dart';
 
 import '../models/player_data.dart';
 
@@ -67,7 +69,9 @@ class Player extends SpriteAnimationComponent
 
       // Anchor it to center and add to game world.
       bullet.anchor = Anchor.bottomCenter;
-
+      gameRef.addCommand(Command<AudioPlayerComponent>(action: (audioPlayer) {
+        audioPlayer.playSfx('audio/crack.wav');
+      }));
       gameRef.add(bullet);
 
       //   _health -= 10;
