@@ -39,14 +39,14 @@ class MasksweirdGame extends FlameGame
   late Sprite sprite;
   late SpriteAnimation no_fire;
   late SpriteAnimation fire;
-  late SpriteAnimation animationBack;
-  late SpriteAnimation animationForward;
-  late SpriteAnimation animationRight;
+  late SpriteAnimation animationSlide;
+  late SpriteAnimation animationJump;
+  late SpriteAnimation animationKick;
   late SpriteAnimation animation5;
 
   // Stores a reference to an enemy manager component.
-  late EnemyManager _enemyManager;
-  // late AllyManager _allyManager;
+  // late EnemyManager _enemyManager;
+  late AllyManager _allyManager;
 
   // Displays player score on top left.
   late TextComponent _playerScore;
@@ -84,8 +84,11 @@ class MasksweirdGame extends FlameGame
         'ship_A.png',
         'animation_fire.png',
         'animation_right.png',
-        'animation_forward.png',
-        'animation_back.png',
+        'animation_jump.png',
+        'animation_kick.png',
+        'animation_slide.png',
+        'ally.png',
+        'animation_run.png'
       ]);
 
       _audioPlayerComponent = AudioPlayerComponent();
@@ -93,18 +96,18 @@ class MasksweirdGame extends FlameGame
 
       _background = Background();
       await add(_background);
-      // sprite = Sprite(
-      //   images.fromCache('ally.png'),
-      // );
+      sprite = Sprite(
+        images.fromCache('ally.png'),
+      );
 
-      // final stars = await ParallaxComponent.load(
-      //   [ParallaxImageData('stars1.png'), ParallaxImageData('stars2.png')],
-      //   fill: LayerFill.width,
-      //   repeat: ImageRepeat.repeat,
-      //   baseVelocity: Vector2(0, -50),
-      //   velocityMultiplierDelta: Vector2(0, 1.5),
-      // );
-      // add(stars);
+      final stars = await ParallaxComponent.load(
+        [ParallaxImageData('stars1.png')],
+        fill: LayerFill.width,
+        repeat: ImageRepeat.repeat,
+        baseVelocity: Vector2(50, 0),
+        velocityMultiplierDelta: Vector2(1.5, 0),
+      );
+      add(stars);
 
       // spriteSheet = SpriteSheet.fromColumnsAndRows(
       //   image: images.fromCache('Group 20.png'),
@@ -112,25 +115,25 @@ class MasksweirdGame extends FlameGame
       //   rows: 1,
       // );
       no_fire = SpriteSheet.fromColumnsAndRows(
-        image: images.fromCache('animation_right.png'),
-        columns: 4,
+        image: images.fromCache('animation_run.png'),
+        columns: 9,
         rows: 1,
-      ).createAnimation(from: 0, to: 1, row: 0, stepTime: 0.2, loop: false);
-      animationBack = SpriteSheet.fromColumnsAndRows(
-        image: images.fromCache('animation_back.png'),
-        columns: 3,
+      ).createAnimation(from: 0, to: 9, row: 0, stepTime: 0.1, loop: true);
+      animationSlide = SpriteSheet.fromColumnsAndRows(
+        image: images.fromCache('animation_slide.png'),
+        columns: 10,
         rows: 1,
-      ).createAnimation(from: 0, to: 3, row: 0, stepTime: 0.2, loop: true);
-      animationForward = SpriteSheet.fromColumnsAndRows(
-        image: images.fromCache('animation_forward.png'),
-        columns: 3,
+      ).createAnimation(from: 0, to: 10, row: 0, stepTime: 0.1, loop: true);
+      animationJump = SpriteSheet.fromColumnsAndRows(
+        image: images.fromCache('animation_jump.png'),
+        columns: 8,
         rows: 1,
-      ).createAnimation(from: 0, to: 3, row: 0, stepTime: 0.2, loop: true);
-      animationRight = SpriteSheet.fromColumnsAndRows(
-        image: images.fromCache('animation_right.png'),
-        columns: 4,
+      ).createAnimation(from: 0, to: 8, row: 0, stepTime: 0.12, loop: true);
+      animationKick = SpriteSheet.fromColumnsAndRows(
+        image: images.fromCache('animation_kick.png'),
+        columns: 9,
         rows: 1,
-      ).createAnimation(from: 0, to: 4, row: 0, stepTime: 0.08, loop: false);
+      ).createAnimation(from: 0, to: 9, row: 0, stepTime: 0.08, loop: false);
       fire = SpriteSheet.fromColumnsAndRows(
         image: images.fromCache('animation_fire.png'),
         columns: 6,
@@ -150,7 +153,7 @@ class MasksweirdGame extends FlameGame
       player = Player(
         joystick: joystick,
         animation: no_fire,
-        size: Vector2(179 / 2, 250 / 2),
+        size: Vector2(62 * 2, 120 * 2),
         position: Vector2(0, size.y / 1.9),
       );
 
@@ -160,10 +163,10 @@ class MasksweirdGame extends FlameGame
       _healthBar =
           HealthBar(player: player, position: Vector2(size.x - 150, 55));
       add(_healthBar);
-      _enemyManager = EnemyManager(spriteSheet: fire);
-      // _allyManager = AllyManager(sprite: sprite);
-      // add(_allyManager);
-      add(_enemyManager);
+      // _enemyManager = EnemyManager(spriteSheet: fire);
+      _allyManager = AllyManager(sprite: sprite);
+      add(_allyManager);
+      // add(_enemyManager);
       final button = ButtonComponent(
         button: CircleComponent(
           radius: 60,
@@ -283,7 +286,7 @@ class MasksweirdGame extends FlameGame
     //   _player.animation = animation2;
     // }
 
-    if (animationRight.isLastFrame) {
+    if (animationKick.isLastFrame) {
       player.compl();
     }
     for (var command in _commandList) {
@@ -348,8 +351,8 @@ class MasksweirdGame extends FlameGame
     // First reset player, enemy manager and power-up manager .
     recordsBloc.saveRecord(player.score);
     player.reset();
-    _enemyManager.reset();
-    // _allyManager.reset();
+    // _enemyManager.reset();
+    _allyManager.reset();
     player.animation = no_fire;
     children.whereType<Enemy>().forEach((enemy) {
       enemy.removeFromParent();

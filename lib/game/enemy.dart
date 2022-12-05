@@ -100,7 +100,7 @@ class Enemy extends SpriteAnimationComponent
 
     if (other is Player &&
         !gameRef.player.animation!.isLastFrame &&
-        gameRef.player.animation == gameRef.animationRight) {
+        gameRef.player.animation == gameRef.animationKick) {
       // If the other Collidable is Player, destroy.
       removeFromParent();
       // destroy();

@@ -48,7 +48,7 @@ class Bullet extends SpriteAnimationComponent
       direction =
           Vector2(-random.nextDouble() - 0.5, -random.nextDouble() + 0.7);
 
-      gameRef.player.animation = gameRef.animationBack;
+      gameRef.player.animation = gameRef.animationSlide;
     }
     if (other is Player) {
       removeFromParent();

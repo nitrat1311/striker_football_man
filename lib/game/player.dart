@@ -58,7 +58,7 @@ class Player extends SpriteAnimationComponent
 
     if (other is Enemy &&
         !gameRef.player.animation!.isLastFrame &&
-        gameRef.player.animation == gameRef.animationRight) {
+        gameRef.player.animation == gameRef.animationKick) {
       // Make the camera shake, with custom intensity.
 
       Bullet bullet = Bullet(
@@ -85,24 +85,25 @@ class Player extends SpriteAnimationComponent
   void update(double dt) {
     super.update(dt);
     // if (playerState == PlayerState.jumping) {
-    //   gameRef.player.animation = gameRef.animationRight;
+    //   gameRef.player.animation = gameRef.animationKick;
     // }
-    if (joystick.delta.x == 0) {
-      // gameRef.animationRight.reset();
-      gameRef.animationForward.reset();
-      gameRef.animationBack.reset();
+    if (joystick.delta.x == 0 && playerState != PlayerState.jumping) {
+      // gameRef.animationKick.reset();
+      gameRef.player.animation = gameRef.no_fire;
+      gameRef.animationJump.reset();
+      gameRef.animationSlide.reset();
       gameRef.player.animation?.done();
     }
     if (!joystick.delta.isZero()) {
-      if (joystick.delta.x < 0) {
-        gameRef.animationForward.reset();
-        gameRef.player.animation = gameRef.animationBack;
+      if (joystick.delta.y > 0) {
+        gameRef.animationJump.reset();
+        gameRef.player.animation = gameRef.animationSlide;
       }
-      if (joystick.delta.x > 0) {
-        gameRef.animationBack.reset();
-        gameRef.player.animation = gameRef.animationForward;
+      if (joystick.delta.y < 0) {
+        gameRef.animationSlide.reset();
+        gameRef.player.animation = gameRef.animationJump;
       }
-      position.add(Vector2(joystick.relativeDelta.x, 0) * 200 * dt);
+      // position.add(Vector2(joystick.relativeDelta.x, 0) * 200 * dt);
     }
 
     if (playerState == PlayerState.stopped1) {}
@@ -144,11 +145,12 @@ class Player extends SpriteAnimationComponent
 
   void jump() async {
     playerState = PlayerState.jumping;
+
+    gameRef.player.animation = gameRef.animationKick;
     gameRef.no_fire.reset();
-    gameRef.player.animation = gameRef.animationRight;
-    // gameRef.animationRight.reset();
-    // gameRef.animationForward.reset();
-    // gameRef.animationBack.reset();
+    // gameRef.animationKick.reset();
+    // gameRef.animationJump.reset();
+    // gameRef.animationSlide.reset();
   }
 
   void compl() {
@@ -158,9 +160,9 @@ class Player extends SpriteAnimationComponent
     // } else
     if (playerState == PlayerState.jumping) {
       gameRef.no_fire.reset();
-      gameRef.animationRight.reset();
-      gameRef.animationForward.reset();
-      gameRef.animationBack.reset();
+      gameRef.animationKick.reset();
+      gameRef.animationJump.reset();
+      gameRef.animationSlide.reset();
 
       playerState = PlayerState.stopped1;
     }

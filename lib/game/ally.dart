@@ -26,7 +26,7 @@ class Ally extends SpriteComponent
 
   // This direction in which this Enemy will move.
   // Defaults to vertically downwards.
-  // Vector2 moveDirection = Vector2(1, 0);
+  Vector2 moveDirection = Vector2(-1, 0);
 
   // Holds an object of Random class to generate random numbers.
   final _random = Random();
@@ -115,7 +115,7 @@ class Ally extends SpriteComponent
     super.update(dt);
 
     // Update the position of this enemy using its speed and delta time.
-    // position += moveDirection * _speed * dt;
+    position += moveDirection * _speed * dt;
     // angle = angle + 0.1;
     // position.clamp(
     //   Vector2.zero() + size / 2,

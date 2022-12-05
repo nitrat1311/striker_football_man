@@ -20,12 +20,12 @@ class AllyManager extends Component
   Random random = Random();
 
   AllyManager({required this.sprite}) : super() {
-    _timer = Timer(0, onTick: _spawnAlly, repeat: false);
+    _timer = Timer(1, onTick: _spawnAlly, repeat: true);
   }
 
   // Spawns a new enemy at random position at the top of the screen.
   void _spawnAlly() {
-    Vector2 initialSize = Vector2(64 * 1.3, 64 * 1.3);
+    Vector2 initialSize = Vector2(173 / 1.5, 142 / 1.5);
 
     // random.nextDouble() generates a random number between 0 and 1.
     // Multiplying it by gameRef.size.x makes sure that the value remains between 0 and width of screen.
