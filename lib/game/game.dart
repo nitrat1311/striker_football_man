@@ -37,6 +37,7 @@ class MasksweirdGame extends FlameGame
   // late SpriteSheet spriteSheet;
   late Sprite sprite;
   late SpriteAnimation no_fire;
+  late SpriteAnimation one;
   late SpriteAnimation fire;
 
   late SpriteAnimation animation5;
@@ -81,6 +82,7 @@ class MasksweirdGame extends FlameGame
         'ship_A.png',
         'animation_fire.png',
         'animation_right.png',
+        'animation_one.png',
       ]);
 
       _audioPlayerComponent = AudioPlayerComponent();
@@ -93,7 +95,11 @@ class MasksweirdGame extends FlameGame
         columns: 1,
         rows: 1,
       ).createAnimation(from: 0, to: 1, row: 0, stepTime: 0.2, loop: false);
-
+      one = SpriteSheet.fromColumnsAndRows(
+        image: images.fromCache('animation_one.png'),
+        columns: 1,
+        rows: 1,
+      ).createAnimation(from: 0, to: 1, row: 0, stepTime: 0.2, loop: false);
       fire = SpriteSheet.fromColumnsAndRows(
         image: images.fromCache('animation_fire.png'),
         columns: 6,

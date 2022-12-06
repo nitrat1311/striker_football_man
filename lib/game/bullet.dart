@@ -75,7 +75,7 @@ class Bullet extends SpriteAnimationComponent
     // }
 
     if (position.x < 20) {
-      gameRef.player.increaseHealthBy(-10);
+      gameRef.player.increaseHealthBy(-25);
       gameRef.camera.shake(intensity: 5);
       // gameRef.player.addToScore(10);
       removeFromParent();

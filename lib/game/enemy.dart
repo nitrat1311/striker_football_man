@@ -119,7 +119,7 @@ class Enemy extends SpriteAnimationComponent
     gameRef.camera.shake(intensity: 5);
     final command = Command<Player>(action: (player) {
       // Use the correct killPoint to increase player's score.
-      player.increaseHealthBy(-10);
+      player.increaseHealthBy(-25);
     });
     gameRef.addCommand(command);
 

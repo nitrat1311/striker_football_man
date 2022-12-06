@@ -54,7 +54,7 @@ class GameOverMenu extends StatelessWidget {
           // Restart button.
           Container(
             decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.elliptical(20, 40)),
+              borderRadius: AppColors.borderRadius,
               border: Border.all(color: AppColors.gradientTitle2, width: 4),
             ),
             child: FloatingActionButton.large(
@@ -75,7 +75,7 @@ class GameOverMenu extends StatelessWidget {
           // Exit button.
           Container(
             decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.elliptical(20, 40)),
+              borderRadius: AppColors.borderRadius,
               border: Border.all(color: AppColors.gradientTitle2, width: 4),
             ),
             margin: REdgeInsets.only(top: 30),

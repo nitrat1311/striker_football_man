@@ -28,6 +28,8 @@ class Player extends SpriteAnimationComponent
   late PlayerData _playerData;
   int get score => _playerData.currentScore;
   var moveDirection = 1;
+
+  double speed = 200;
   Player({
     // required this.joystick,
     SpriteAnimation? animation,
@@ -56,8 +58,17 @@ class Player extends SpriteAnimationComponent
   void update(double dt) {
     super.update(dt);
 
+    if (score > 100) {
+      speed = 400;
+      gameRef.player.animation = gameRef.one;
+      gameRef.player.size = Vector2(79 / 2, 140 / 2);
+    } else {
+      speed = 200;
+      gameRef.player.animation = gameRef.no_fire;
+      gameRef.player.size = Vector2(114 / 2, 250 / 2);
+    }
     position
-        .add(Vector2(-0.2 * moveDirection, -0.7 * moveDirection) * 200 * dt);
+        .add(Vector2(-0.2 * moveDirection, -0.7 * moveDirection) * speed * dt);
 
     if (position.y < 280) {
       moveDirection = -1;
