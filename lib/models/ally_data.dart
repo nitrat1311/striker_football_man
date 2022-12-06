@@ -10,6 +10,8 @@ class AllyData {
   // Level of this enemy.
   final int level;
 
+  final int psn;
+
   // Indicates if this enemy can move horizontally.
   final bool hMove;
 
@@ -18,6 +20,7 @@ class AllyData {
 
   const AllyData({
     required this.speed,
+    required this.psn,
     required this.spriteId,
     required this.level,
     required this.hMove,

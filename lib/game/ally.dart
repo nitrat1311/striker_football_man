@@ -33,7 +33,6 @@ class Ally extends SpriteComponent
 
   // The data required to create this enemy.
   final AllyData allyData;
-
   // Represents health of this enemy.
   int _hitPoints = 10;
   // Returns a random direction vector with slight angle to +ve y axis.
@@ -43,6 +42,7 @@ class Ally extends SpriteComponent
 
   Ally({
     required Sprite? sprite,
+    required bool hMove,
     required this.allyData,
     required Vector2? position,
     required Vector2? size,
@@ -116,7 +116,10 @@ class Ally extends SpriteComponent
 
     // Update the position of this enemy using its speed and delta time.
     position += moveDirection * _speed * dt;
-    // angle = angle + 0.1;
+    if (allyData.hMove) {
+      angle = angle - 0.1;
+    }
+
     // position.clamp(
     //   Vector2.zero() + size / 2,
     //   gameRef.size - size / 2,

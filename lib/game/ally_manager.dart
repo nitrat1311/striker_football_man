@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flame/components.dart';
+import 'package:flame/sprite.dart';
 import 'package:strikerFootballman/game/ally.dart';
 import 'game.dart';
 import 'knows_game_size.dart';
@@ -14,39 +15,39 @@ class AllyManager extends Component
   late Timer _timer;
 
   // A reference to spriteSheet contains enemy sprites.
-  Sprite sprite;
+  SpriteSheet spriteSheet;
 
   // Holds an object of Random class to generate random numbers.
   Random random = Random();
 
-  AllyManager({required this.sprite}) : super() {
-    _timer = Timer(1, onTick: _spawnAlly, repeat: true);
+  AllyManager({required this.spriteSheet}) : super() {
+    _timer = Timer(2, onTick: _spawnAlly, repeat: true);
   }
 
   // Spawns a new enemy at random position at the top of the screen.
   void _spawnAlly() {
-    Vector2 initialSize = Vector2(173 / 1.5, 142 / 1.5);
+    Vector2 initialSize = Vector2(100 / 1.5, 100 / 1.5);
 
     // random.nextDouble() generates a random number between 0 and 1.
     // Multiplying it by gameRef.size.x makes sure that the value remains between 0 and width of screen.
     // Vector2 position = Vector2(gameRef.size.x - 32,
     //     (gameRef.size.y - gameRef.size.y / 3) - 500 * random.nextDouble());
 
-    Vector2 position =
-        Vector2(gameRef.size.x - 32, (gameRef.size.y - gameRef.size.y / 3));
     // Make sure that we have a valid BuildContext before using it.
     if (gameRef.buildContext != null) {
       // Get current score and figure out the max level of enemy that
       // can be spawned for this score.
 
       /// Gets a random [EnemyData] object from the list.
-      final enemyData = _enemyDataList.elementAt(0);
-
+      final enemyData = _enemyDataList.elementAt(random.nextInt(3));
+      Vector2 position = Vector2(gameRef.size.x - 32,
+          (gameRef.size.y - (gameRef.size.y / 2) + enemyData.psn));
       Ally enemy = Ally(
-        sprite: sprite,
+        sprite: spriteSheet.getSpriteById(enemyData.spriteId),
         size: initialSize,
         position: position,
         allyData: enemyData,
+        hMove: enemyData.hMove,
       );
 
       // Makes sure that the enemy sprite is centered.
@@ -93,9 +94,26 @@ class AllyManager extends Component
     AllyData(
       killPoint: 1,
       speed: 250,
-      spriteId: 1,
+      spriteId: 0,
       level: 1,
       hMove: false,
+      psn: 0,
+    ),
+    AllyData(
+      killPoint: 1,
+      speed: 250,
+      spriteId: 1,
+      level: 1,
+      hMove: true,
+      psn: 110,
+    ),
+    AllyData(
+      killPoint: 1,
+      speed: 250,
+      spriteId: 0,
+      level: 1,
+      hMove: false,
+      psn: 110,
     ),
   ];
 }

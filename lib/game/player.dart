@@ -98,10 +98,16 @@ class Player extends SpriteAnimationComponent
       if (joystick.delta.y > 0) {
         gameRef.animationJump.reset();
         gameRef.player.animation = gameRef.animationSlide;
+        if (gameRef.animationSlide.isLastFrame) {
+          gameRef.player.animation = gameRef.no_fire;
+        }
       }
       if (joystick.delta.y < 0) {
         gameRef.animationSlide.reset();
         gameRef.player.animation = gameRef.animationJump;
+        if (gameRef.animationJump.isLastFrame) {
+          gameRef.player.animation = gameRef.no_fire;
+        }
       }
       // position.add(Vector2(joystick.relativeDelta.x, 0) * 200 * dt);
     }

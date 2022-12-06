@@ -36,7 +36,7 @@ class MasksweirdGame extends FlameGame
   final RecordsBloc recordsBloc;
   // Stores a reference to the main spritesheet.
   // late SpriteSheet spriteSheet;
-  late Sprite sprite;
+  late SpriteSheet spriteSheet;
   late SpriteAnimation no_fire;
   late SpriteAnimation fire;
   late SpriteAnimation animationSlide;
@@ -96,8 +96,9 @@ class MasksweirdGame extends FlameGame
 
       _background = Background();
       await add(_background);
-      sprite = Sprite(
-        images.fromCache('ally.png'),
+      spriteSheet = SpriteSheet(
+        image: images.fromCache('ally.png'),
+        srcSize: Vector2(100, 100),
       );
 
       final stars = await ParallaxComponent.load(
@@ -164,7 +165,7 @@ class MasksweirdGame extends FlameGame
           HealthBar(player: player, position: Vector2(size.x - 150, 55));
       add(_healthBar);
       // _enemyManager = EnemyManager(spriteSheet: fire);
-      _allyManager = AllyManager(sprite: sprite);
+      _allyManager = AllyManager(spriteSheet: spriteSheet);
       add(_allyManager);
       // add(_enemyManager);
       final button = ButtonComponent(
