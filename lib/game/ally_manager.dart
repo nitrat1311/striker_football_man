@@ -29,9 +29,11 @@ class AllyManager extends Component
 
     // random.nextDouble() generates a random number between 0 and 1.
     // Multiplying it by gameRef.size.x makes sure that the value remains between 0 and width of screen.
-    Vector2 position = Vector2(gameRef.size.x - 32,
-        (gameRef.size.y - gameRef.size.y / 3) - 500 * random.nextDouble());
+    // Vector2 position = Vector2(gameRef.size.x - 32,
+    //     (gameRef.size.y - gameRef.size.y / 3) - 500 * random.nextDouble());
 
+    Vector2 position =
+        Vector2(gameRef.size.x - 32, (gameRef.size.y - gameRef.size.y / 3));
     // Make sure that we have a valid BuildContext before using it.
     if (gameRef.buildContext != null) {
       // Get current score and figure out the max level of enemy that
