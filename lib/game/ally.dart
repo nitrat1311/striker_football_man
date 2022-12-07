@@ -22,7 +22,7 @@ class Ally extends SpriteComponent
         // Tappable,
         HasGameRef<MasksweirdGame> {
   // The speed of this enemy.
-  double _speed = 250;
+  double _speed = 350;
 
   // This direction in which this Enemy will move.
   // Defaults to vertically downwards.
@@ -42,7 +42,6 @@ class Ally extends SpriteComponent
 
   Ally({
     required Sprite? sprite,
-    required bool hMove,
     required this.allyData,
     required Vector2? position,
     required Vector2? size,
@@ -66,10 +65,10 @@ class Ally extends SpriteComponent
     // Adding a circular hitbox with radius as 0.8 times
     // the smallest dimension of this components size.
     final shape = CircleHitbox.relative(
-      0.8,
+      1,
       parentSize: size,
-      position: size / 2,
-      anchor: Anchor.center,
+      position: Vector2(size.x / 3, size.y),
+      anchor: Anchor.centerLeft,
     );
     add(shape);
   }
@@ -85,10 +84,69 @@ class Ally extends SpriteComponent
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollision(intersectionPoints, other);
 
-    if (other is Bullet) {
-      // If the other Collidable is Player, destroy.
-      // kiss();
-      // gameRef.resetAlly();
+    if (other is Player &&
+        gameRef.player.animation == gameRef.animationKick &&
+        allyData.hMove) {
+      removeFromParent();
+      gameRef.player.addToScore(allyData.killPoint * 10);
+      Bullet bullet = Bullet(
+          animation: gameRef.fire,
+          size: Vector2(104 / 2, 101 / 2),
+          position: Vector2(
+              gameRef.player.position.x + 32, gameRef.player.position.y + 80));
+
+      // Anchor it to center and add to game world.
+      bullet.anchor = Anchor.bottomCenter;
+
+      gameRef.add(bullet);
+    }
+    if (other is Player &&
+        gameRef.player.animation == gameRef.animationSlide &&
+        allyData.hMove) {
+      removeFromParent();
+      gameRef.player.addToScore(allyData.killPoint * 10);
+      Bullet bullet = Bullet(
+          animation: gameRef.fire,
+          size: Vector2(104 / 2, 101 / 2),
+          position: Vector2(
+              gameRef.player.position.x + 32, gameRef.player.position.y + 80));
+
+      // Anchor it to center and add to game world.
+      bullet.anchor = Anchor.bottomCenter;
+
+      gameRef.add(bullet);
+    }
+    if (other is Player &&
+        gameRef.player.joystick.delta.y < 0 &&
+        allyData.psn != 130 &&
+        !allyData.hMove) {
+      removeFromParent();
+      final command = Command<Player>(action: (player) {
+        player.increaseHealthBy(-20);
+      });
+      gameRef.addCommand(command);
+      gameRef.camera.shake(intensity: 5);
+    }
+    if (other is Player &&
+        gameRef.player.joystick.delta.y > 0 &&
+        allyData.psn != 0 &&
+        !allyData.hMove) {
+      removeFromParent();
+      final command = Command<Player>(action: (player) {
+        player.increaseHealthBy(-20);
+      });
+      gameRef.addCommand(command);
+      gameRef.camera.shake(intensity: 5);
+    }
+    if (other is Player &&
+        gameRef.player.joystick.delta.y == 0 &&
+        !allyData.hMove) {
+      removeFromParent();
+      final command = Command<Player>(action: (player) {
+        player.increaseHealthBy(-20);
+      });
+      gameRef.addCommand(command);
+      gameRef.camera.shake(intensity: 5);
     }
   }
 

@@ -103,7 +103,7 @@ class MasksweirdGame extends FlameGame
 
       final stars = await ParallaxComponent.load(
         [ParallaxImageData('stars1.png')],
-        fill: LayerFill.width,
+        fill: LayerFill.height,
         repeat: ImageRepeat.repeat,
         baseVelocity: Vector2(50, 0),
         velocityMultiplierDelta: Vector2(1.5, 0),
@@ -119,7 +119,7 @@ class MasksweirdGame extends FlameGame
         image: images.fromCache('animation_run.png'),
         columns: 9,
         rows: 1,
-      ).createAnimation(from: 0, to: 9, row: 0, stepTime: 0.1, loop: true);
+      ).createAnimation(from: 0, to: 9, row: 0, stepTime: 0.08, loop: true);
       animationSlide = SpriteSheet.fromColumnsAndRows(
         image: images.fromCache('animation_slide.png'),
         columns: 10,
@@ -129,7 +129,7 @@ class MasksweirdGame extends FlameGame
         image: images.fromCache('animation_jump.png'),
         columns: 8,
         rows: 1,
-      ).createAnimation(from: 0, to: 8, row: 0, stepTime: 0.12, loop: true);
+      ).createAnimation(from: 0, to: 8, row: 0, stepTime: 0.1, loop: true);
       animationKick = SpriteSheet.fromColumnsAndRows(
         image: images.fromCache('animation_kick.png'),
         columns: 9,
@@ -154,8 +154,8 @@ class MasksweirdGame extends FlameGame
       player = Player(
         joystick: joystick,
         animation: no_fire,
-        size: Vector2(62 * 2, 120 * 2),
-        position: Vector2(0, size.y / 1.9),
+        size: Vector2(62 * 1.5, 120 * 1.5),
+        position: Vector2(0, size.y / 1.8),
       );
 
       // Makes sure that the sprite is centered.
@@ -180,7 +180,7 @@ class MasksweirdGame extends FlameGame
       add(button);
       // Create text component for player score.
       _playerScore = TextComponent(
-        position: Vector2(size.x / 2 - 150, 30),
+        position: Vector2(30, 30),
         textRenderer: TextPaint(
           style: const TextStyle(
               letterSpacing: 5,
@@ -191,7 +191,7 @@ class MasksweirdGame extends FlameGame
         ),
       );
       _playerScore2 = TextComponent(
-        position: Vector2(size.x / 2 - 150, 28),
+        position: Vector2(30, 28),
         textRenderer: TextPaint(
             style: TextStyle(
                 letterSpacing: 5,
@@ -215,7 +215,7 @@ class MasksweirdGame extends FlameGame
 
       // Create text component for player health.
       _playerHealth = TextComponent(
-        position: Vector2(size.x - 48, 30),
+        position: Vector2(size.x - 70, 30),
         textRenderer: TextPaint(
           style: const TextStyle(
               letterSpacing: 5,
@@ -226,7 +226,7 @@ class MasksweirdGame extends FlameGame
         ),
       );
       _playerHealth2 = TextComponent(
-        position: Vector2(size.x - 50, 28),
+        position: Vector2(size.x - 70, 28),
         textRenderer: TextPaint(
           style: TextStyle(
               letterSpacing: 5,
@@ -306,8 +306,8 @@ class MasksweirdGame extends FlameGame
       // Update score and health components with latest values.
       _playerScore.text = 'Score: ${player.score}';
       _playerScore2.text = 'Score: ${player.score}';
-      _playerHealth.text = 'Health';
-      _playerHealth2.text = 'Health';
+      _playerHealth.text = 'Life';
+      _playerHealth2.text = 'Life';
 
       /// Display [GameOverMenu] when [Player.health] becomes
       /// zero and camera stops shaking.

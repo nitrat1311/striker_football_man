@@ -16,6 +16,7 @@ class GameMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const double angle = -0.4;
     if (!AppState().isDevMode) {
       Future.delayed(Duration.zero, () {
         Provider.of<ViewOrGameData>(context, listen: false).startedGame = true;
@@ -26,7 +27,7 @@ class GameMenu extends StatelessWidget {
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
       colors: <Color>[
-        AppColors.gradientTitle1,
+        AppColors.gradientTitle2,
         AppColors.gradientTitle2,
       ],
     ).createShader(Rect.fromCenter(
@@ -58,7 +59,7 @@ class GameMenu extends StatelessWidget {
                   Padding(
                     padding: REdgeInsets.fromLTRB(0, 50, 0, 0),
                     child: AutoSizeText(
-                      'Striker Football Man',
+                      'Juggling Soccer Balls',
                       wrapWords: false,
                       maxLines: 2,
                       textAlign: TextAlign.center,
@@ -81,8 +82,8 @@ class GameMenu extends StatelessWidget {
                   SizedBox(
                     height: 40.h,
                   ),
-                  Align(
-                    alignment: Alignment.centerLeft,
+                  Transform.rotate(
+                    angle: angle,
                     child: GestureDetector(
                       onTap: () {
                         Navigator.of(context).pushReplacement(
@@ -100,8 +101,8 @@ class GameMenu extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Align(
-                    alignment: Alignment.center,
+                  Transform.rotate(
+                    angle: angle,
                     child: GestureDetector(
                       onTap: () {
                         Navigator.of(context).push(
@@ -119,8 +120,8 @@ class GameMenu extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Align(
-                    alignment: Alignment.centerRight,
+                  Transform.rotate(
+                    angle: angle,
                     child: GestureDetector(
                       onTap: () {
                         Navigator.of(context).push(

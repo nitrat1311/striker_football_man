@@ -1,5 +1,6 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:strikerFootballman/game/ally.dart';
 import 'package:strikerFootballman/game/bullet.dart';
 import 'package:provider/provider.dart';
 
@@ -42,10 +43,10 @@ class Player extends SpriteAnimationComponent
     // Adding a circular hitbox with radius as 0.8 times
     // the smallest dimension of this components size.
     final shape = RectangleHitbox.relative(
-      Vector2(0.6, 0.1),
-      parentSize: Vector2(super.size.x * 0.6, super.size.y * 0.3),
-      position: Vector2(super.size.x / 2, super.size.y / 2),
-      anchor: Anchor.bottomCenter,
+      Vector2(0.5, 1),
+      parentSize: Vector2(super.size.x * 0.5, super.size.y * 1),
+      position: Vector2(super.size.x / 2, super.size.y),
+      anchor: Anchor.centerRight,
     );
     add(shape);
 
@@ -56,28 +57,28 @@ class Player extends SpriteAnimationComponent
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollision(intersectionPoints, other);
 
-    if (other is Enemy &&
-        !gameRef.player.animation!.isLastFrame &&
-        gameRef.player.animation == gameRef.animationKick) {
-      // Make the camera shake, with custom intensity.
+    // if (other is Enemy &&
+    //     !gameRef.player.animation!.isLastFrame &&
+    //     gameRef.player.animation == gameRef.animationKick) {
+    //   // Make the camera shake, with custom intensity.
 
-      Bullet bullet = Bullet(
-          animation: gameRef.fire,
-          size: Vector2(104 / 2, 101 / 2),
-          position: Vector2(
-              gameRef.player.position.x + 32, gameRef.player.position.y + 62));
+    //   Bullet bullet = Bullet(
+    //       animation: gameRef.fire,
+    //       size: Vector2(104 / 2, 101 / 2),
+    //       position: Vector2(
+    //           gameRef.player.position.x + 32, gameRef.player.position.y + 62));
 
-      // Anchor it to center and add to game world.
-      bullet.anchor = Anchor.bottomCenter;
+    //   // Anchor it to center and add to game world.
+    //   bullet.anchor = Anchor.bottomCenter;
 
-      gameRef.add(bullet);
+    //   gameRef.add(bullet);
 
-      //   _health -= 10;
-      //   if (_health <= 0) {
-      //     _health = 0;
-      //   }
+    //   _health -= 10;
+    //   if (_health <= 0) {
+    //     _health = 0;
+    //   }
 
-    }
+    // }
   }
 
   // This method is called by game class for every frame.

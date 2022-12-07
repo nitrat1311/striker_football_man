@@ -26,7 +26,7 @@ class AllyManager extends Component
 
   // Spawns a new enemy at random position at the top of the screen.
   void _spawnAlly() {
-    Vector2 initialSize = Vector2(100 / 1.5, 100 / 1.5);
+    Vector2 initialSize = Vector2(100 / 1.4, 100 / 1.4);
 
     // random.nextDouble() generates a random number between 0 and 1.
     // Multiplying it by gameRef.size.x makes sure that the value remains between 0 and width of screen.
@@ -39,7 +39,7 @@ class AllyManager extends Component
       // can be spawned for this score.
 
       /// Gets a random [EnemyData] object from the list.
-      final enemyData = _enemyDataList.elementAt(random.nextInt(3));
+      final enemyData = _enemyDataList.elementAt(random.nextInt(5));
       Vector2 position = Vector2(gameRef.size.x - 32,
           (gameRef.size.y - (gameRef.size.y / 2) + enemyData.psn));
       Ally enemy = Ally(
@@ -47,7 +47,6 @@ class AllyManager extends Component
         size: initialSize,
         position: position,
         allyData: enemyData,
-        hMove: enemyData.hMove,
       );
 
       // Makes sure that the enemy sprite is centered.
@@ -93,7 +92,7 @@ class AllyManager extends Component
   static const List<AllyData> _enemyDataList = [
     AllyData(
       killPoint: 1,
-      speed: 250,
+      speed: 350,
       spriteId: 0,
       level: 1,
       hMove: false,
@@ -101,19 +100,35 @@ class AllyManager extends Component
     ),
     AllyData(
       killPoint: 1,
-      speed: 250,
+      speed: 350,
       spriteId: 1,
       level: 1,
       hMove: true,
-      psn: 110,
+      psn: 100,
     ),
     AllyData(
       killPoint: 1,
-      speed: 250,
+      speed: 350,
       spriteId: 0,
       level: 1,
       hMove: false,
-      psn: 110,
+      psn: 130,
+    ),
+    AllyData(
+      killPoint: 1,
+      speed: 500,
+      spriteId: 1,
+      level: 1,
+      hMove: true,
+      psn: 100,
+    ),
+    AllyData(
+      killPoint: 1,
+      speed: 450,
+      spriteId: 0,
+      level: 1,
+      hMove: false,
+      psn: 0,
     ),
   ];
 }

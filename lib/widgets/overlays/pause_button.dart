@@ -15,11 +15,11 @@ class PauseButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Align(
-      alignment: Alignment.topLeft,
+      alignment: Alignment.topCenter,
       child: TextButton(
         child: Icon(
-          size: 42.h,
-          Icons.stop,
+          size: 52.h,
+          Icons.outbond,
           color: AppColors.gradientTitle2,
         ),
         onPressed: () {

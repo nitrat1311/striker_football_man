@@ -44,23 +44,23 @@ class Bullet extends SpriteAnimationComponent
     super.onCollision(intersectionPoints, other);
 
     // If the other Collidable is Enemy, remove this bullet.
-    if (other is Ally) {
-      direction =
-          Vector2(-random.nextDouble() - 0.5, -random.nextDouble() + 0.7);
+    // if (other is Ally) {
+    //   direction =
+    //       Vector2(-random.nextDouble() - 0.5, -random.nextDouble() + 0.7);
 
-      gameRef.player.animation = gameRef.animationSlide;
-    }
-    if (other is Player) {
-      removeFromParent();
-      // gameRef.player.animation = gameRef.catch_animation;
-      final command = Command<Player>(action: (player) {
-        // Use the correct killPoint to increase player's score.
+    //   gameRef.player.animation = gameRef.animationSlide;
+    // }
+    // if (other is Player) {
+    //   removeFromParent();
+    //   // gameRef.player.animation = gameRef.catch_animation;
+    //   final command = Command<Player>(action: (player) {
+    //     // Use the correct killPoint to increase player's score.
 
-        player.addToScore(10);
-      });
-      gameRef.addCommand(command);
-      gameRef.resetAlly();
-    }
+    //     player.addToScore(10);
+    //   });
+    //   gameRef.addCommand(command);
+    //   gameRef.resetAlly();
+    // }
     if (other is Enemy) {
       gameRef.player.increaseHealthBy(-10);
       removeFromParent();
@@ -74,16 +74,16 @@ class Bullet extends SpriteAnimationComponent
 
     // Moves the bullet to a new position with _speed and direction.
     position += direction * 450 * dt;
-    if (position.y < 30 || position.y > gameRef.size.y - 30) {
-      direction.y = direction.y * -1;
-    }
+    // if (position.y < 30 || position.y > gameRef.size.y - 30) {
+    //   direction.y = direction.y * -1;
+    // }
 
-    if (position.x < 0 || position.x > gameRef.size.x - 100) {
-      // gameRef.player.increaseHealthBy(-10);
-      // gameRef.camera.shake(intensity: 5);
-      gameRef.player.addToScore(10);
-      removeFromParent();
-    }
+    // if (position.x < 0 || position.x > gameRef.size.x - 100) {
+    //   // gameRef.player.increaseHealthBy(-10);
+    //   // gameRef.camera.shake(intensity: 5);
+    //   gameRef.player.addToScore(10);
+    //   removeFromParent();
+    // }
     // if (position.y < 0 || position.x > gameRef.size.y) {
     //   gameRef.player.increaseHealthBy(-10);
     //   gameRef.camera.shake(intensity: 5);
