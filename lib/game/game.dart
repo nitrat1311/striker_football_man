@@ -18,7 +18,6 @@ import 'enemy.dart';
 import 'health_bar.dart';
 import 'player.dart';
 import 'command.dart';
-import 'enemy_manager.dart';
 import 'audio_player_component.dart';
 
 // This class is responsible for initializing and running the game-loop.
@@ -37,7 +36,7 @@ class MasksweirdGame extends FlameGame
   // Stores a reference to the main spritesheet.
   // late SpriteSheet spriteSheet;
   late SpriteSheet spriteSheet;
-  late SpriteAnimation no_fire;
+  late SpriteAnimation noFire;
   late SpriteAnimation fire;
   late SpriteAnimation animationSlide;
   late SpriteAnimation animationJump;
@@ -83,7 +82,6 @@ class MasksweirdGame extends FlameGame
       await images.loadAll([
         'ship_A.png',
         'animation_fire.png',
-        'animation_right.png',
         'animation_jump.png',
         'animation_kick.png',
         'animation_slide.png',
@@ -109,13 +107,7 @@ class MasksweirdGame extends FlameGame
         velocityMultiplierDelta: Vector2(1.5, 0),
       );
       add(stars);
-
-      // spriteSheet = SpriteSheet.fromColumnsAndRows(
-      //   image: images.fromCache('Group 20.png'),
-      //   columns: 8,
-      //   rows: 1,
-      // );
-      no_fire = SpriteSheet.fromColumnsAndRows(
+      noFire = SpriteSheet.fromColumnsAndRows(
         image: images.fromCache('animation_run.png'),
         columns: 9,
         rows: 1,
@@ -153,7 +145,7 @@ class MasksweirdGame extends FlameGame
       add(joystick);
       player = Player(
         joystick: joystick,
-        animation: no_fire,
+        animation: noFire,
         size: Vector2(62 * 1.5, 120 * 1.5),
         position: Vector2(0, size.y / 1.8),
       );
@@ -164,7 +156,6 @@ class MasksweirdGame extends FlameGame
       _healthBar =
           HealthBar(player: player, position: Vector2(size.x - 150, 55));
       add(_healthBar);
-      // _enemyManager = EnemyManager(spriteSheet: fire);
       _allyManager = AllyManager(spriteSheet: spriteSheet);
       add(_allyManager);
       // add(_enemyManager);
@@ -264,12 +255,7 @@ class MasksweirdGame extends FlameGame
   // to Flutter's widget tree.
   @override
   void onAttach() {
-    if (buildContext != null) {
-      // Get the PlayerData from current build context without registering a listener.
-      // final playerData = Provider.of<PlayerData>(buildContext!, listen: false);
-      // Update the current spaceship type of player.
-      // _player.setSpaceshipType(playerData.spaceshipType);
-    }
+    if (buildContext != null) {}
     _audioPlayerComponent.playBgm('music.mp3');
     super.onAttach();
   }
@@ -283,10 +269,6 @@ class MasksweirdGame extends FlameGame
   @override
   void update(double dt) {
     super.update(dt);
-    // if (_player.health < 80 && _player.health > 40) {
-    //   _player.animation = animation2;
-    // }
-
     if (animationKick.isLastFrame) {
       player.compl();
     }
@@ -312,7 +294,6 @@ class MasksweirdGame extends FlameGame
       /// Display [GameOverMenu] when [Player.health] becomes
       /// zero and camera stops shaking.
       if (player.health <= 0 && (!camera.shaking)) {
-        // _audioPlayerComponent.playSfx('audio/game_over.mp3');
         pauseEngine();
         overlays.remove(PauseButton.id);
         overlays.add(GameOverMenu.id);
@@ -352,9 +333,8 @@ class MasksweirdGame extends FlameGame
     // First reset player, enemy manager and power-up manager .
     recordsBloc.saveRecord(player.score);
     player.reset();
-    // _enemyManager.reset();
     _allyManager.reset();
-    player.animation = no_fire;
+    player.animation = noFire;
     children.whereType<Enemy>().forEach((enemy) {
       enemy.removeFromParent();
     });
@@ -364,6 +344,5 @@ class MasksweirdGame extends FlameGame
     children.whereType<Ally>().forEach((ally) {
       ally.removeFromParent();
     });
-    // _allyManager.reset();
   }
 }

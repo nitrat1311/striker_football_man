@@ -1,6 +1,5 @@
 import 'dart:collection';
 import 'dart:async';
-import 'dart:developer';
 import 'package:appsflyer_sdk/appsflyer_sdk.dart';
 
 class AppsAttribution {
