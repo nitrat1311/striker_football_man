@@ -58,7 +58,7 @@ class GameMenu extends StatelessWidget {
                   Padding(
                     padding: REdgeInsets.fromLTRB(0, 50, 0, 0),
                     child: AutoSizeText(
-                      'Striker Football Man',
+                      'Sport Fan Tips',
                       wrapWords: false,
                       maxLines: 2,
                       textAlign: TextAlign.center,
