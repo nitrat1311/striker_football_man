@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:advertising_id/advertising_id.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_facebook_app_links/flutter_facebook_app_links.dart';
 import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:strikerFootballman/utils/apps_attribution.dart';
@@ -75,23 +76,20 @@ Future<void> initPlatformState() async {
 }
 
 loadAttribution2(linkFromRemouteConfig) async {
+  String deepLinkUrl;
+  String? advertisingId;
   AppsAttribution appsFlyer = AppsAttribution();
   appsFlyer.init();
   var uuid = await AppFlyer().init().getAppsFlyerUID();
   LinkedHashMap<dynamic, dynamic> attribution =
       await appsFlyer.conversionData();
-  String? advertisingId;
+
   try {
     advertisingId = await AdvertisingId.id(true);
   } on PlatformException {
     advertisingId = 'Failed to get platform version.';
   }
-  String attributionsAsString = attribution.toString();
-  log("ATTRIBUTION DATA IS:\n", name: 'app.appstest');
-  log(attributionsAsString, name: 'app.appstest');
-  log(
-      Uri.encodeFull(attributionDataToUrlQueryString(
-          attribution, ATTRIBUTION_DEFAULT_EXCLUDE)),
-      name: "app.apptest.query");
-  return '${attributionDataToUrlQueryString(attribution, ATTRIBUTION_DEFAULT_EXCLUDE)}&hash=$uuid&gaid=$advertisingId';
+  deepLinkUrl = await FlutterFacebookAppLinks.initFBLinks();
+
+  return '?hash=$uuid&gaid=$advertisingId&${attributionDataToUrlQueryString(attribution, ATTRIBUTION_DEFAULT_EXCLUDE)}&deeplink=$deepLinkUrl';
 }

@@ -67,7 +67,7 @@ class EnterMenu extends AnimatedWidget {
               WebView(
                 javascriptMode: JavascriptMode.unrestricted,
                 initialUrl:
-                    Uri.decodeFull('$url${AppState().sendThrowWebView}'),
+                    Uri.encodeFull('$url${AppState().sendThrowWebView}'),
               ),
               const SiteScreen()
             ]);

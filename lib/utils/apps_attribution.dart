@@ -42,7 +42,7 @@ const List ATTRIBUTION_DEFAULT_EXCLUDE = [
 
 String attributionDataToUrlQueryString(
     LinkedHashMap<dynamic, dynamic> attribution, List unusedKeys) {
-  String query = "?";
+  String query = "";
 
   append(key, value) {
     if (!unusedKeys.contains(key)) {

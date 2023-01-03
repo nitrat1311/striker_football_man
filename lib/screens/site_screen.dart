@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'dart:io';
 
@@ -51,6 +52,8 @@ class WelcomeWidget extends AnimatedWidget {
 
   @override
   Widget build(BuildContext context) {
+    // log(Uri.encodeFull(
+    //     '${remoteConfig.getString('aboutUs')}${AppState().sendThrowWebView}'));
     if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
     return Scaffold(
       body: WillPopScope(
@@ -68,7 +71,7 @@ class WelcomeWidget extends AnimatedWidget {
                 },
                 gestureNavigationEnabled: true,
                 javascriptMode: JavascriptMode.unrestricted,
-                initialUrl: Uri.decodeFull(
+                initialUrl: Uri.encodeFull(
                     '${remoteConfig.getString('aboutUs')}${AppState().sendThrowWebView}'),
                 zoomEnabled: false,
                 gestureRecognizers: {
